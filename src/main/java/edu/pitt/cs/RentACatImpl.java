@@ -19,7 +19,20 @@ public class RentACatImpl implements RentACat {
 
 	public boolean returnCat(int id) {
 		// TODO: Fill in
-		return false;
+		Cat c = getCat(id);
+		if (c == null){
+			System.out.println("Invalid cat ID.");
+			return false;
+		}
+		if(c.getRented()) {
+			c.returnCat();
+			System.out.println("Welcome back, " + c.getName() + "!");
+			return true;
+		}
+		else{
+			System.out.println(c.getName() + " is already here!");
+			return false;
+		}
 	}
 
 	/**
@@ -34,7 +47,20 @@ public class RentACatImpl implements RentACat {
 
 	public boolean rentCat(int id) {
 		// TODO: Fill in
-		return false;
+		Cat c = getCat(id);
+		if (c == null){
+			System.out.println("Invalid cat ID");
+			return false;
+		}
+		if (!c.getRented()){
+			c.rentCat();
+			System.out.println(c.getName() + " has been rented.");
+			return true;
+		}
+		else{
+			System.out.println("Sorry, " + c.getName() + " is not here!");
+			return false;
+		}
 	}
 
 	/**
@@ -48,7 +74,13 @@ public class RentACatImpl implements RentACat {
 
 	public boolean renameCat(int id, String name) {
 		// TODO: Fill in
-		return false;
+		Cat c = getCat(id);
+		if (c == null){
+			//System.out.println("Invalid cat ID.");
+			return false;
+		}
+		c.renameCat(name);
+		return true;
 	}
 
 	/**
@@ -63,7 +95,22 @@ public class RentACatImpl implements RentACat {
 
 	public String listCats() {
 		// TODO: Fill in
-		return "WRITE CODE FOR THIS";
+		if(cats == null){
+			return "";
+		}
+		StringBuilder strbld = new StringBuilder();
+		for (Cat c : cats){
+			if(!c.getRented()){
+				if(strbld.length() > 0){
+					strbld.append("\n");
+				}
+				strbld.append(c.toString());
+			}
+		}
+		// if (strbld.length() > 0){
+		// 	strbld.append("\n");
+		// }
+		return strbld.toString();
 	}
 
 	/**
@@ -86,7 +133,7 @@ public class RentACatImpl implements RentACat {
 			// If we found a cat whose id matches the id
 			// of the argument, then we have a match and
 			// can thus return a reference to that cat
-			if (c.getId() == id) {
+			if (c != null && c.getId() == id) {
 				return c;
 			}
 		}
